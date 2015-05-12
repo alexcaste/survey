@@ -1,0 +1,14 @@
+<h1>All Questions in the Manager</h1>
+<br>
+<br>
+<ol>
+  <% @questions.each do |question| %>
+    <li><p><a href='/question/<%= question.id %>'> <%= question.question %></a></p></li>
+  <% end %>
+</ol>
+
+<p> Add a Question </p>
+<form action= '/add_question' method= 'post'>
+  <input id='add_question' name= 'add_question' type= 'text'>
+  <button type= "submit"> Submit </button>
+</form>

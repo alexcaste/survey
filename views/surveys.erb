@@ -1,0 +1,15 @@
+<h1>All Surveys in the Manager</h1>
+<br>
+<br>
+<ol>
+  <% @surveys.each do |survey| %>
+  <li><p><a href='/survey/<%= survey.id %>'> <%= survey.name %></a></p></li>
+  <% end %>
+</ol>
+
+
+<p> Add a Survey </p>
+<form action= '/add_survey' method= 'post'>
+  <input id='add_survey' name= 'add_survey' type= 'text'>
+  <button type= "submit"> Submit </button>
+</form>

@@ -1,0 +1,49 @@
+<h1><%= @survey.name %>'s Questions</h1>
+
+<ol>
+  <% @questions.each do |question| %>
+    <li><a href="/question/<%= question.id %>"> <%= question.question %></a></li>
+  <% end %>
+
+</ol>
+
+<% if @all_questions != nil %>
+<div class = "form-group">
+  <form action = "/survey/<%= @survey.id %>/add" method = "post">
+    <label for = "question">Add a question to this survey:</label>
+    <select id = "question" name = "question">
+      <% @all_questions.each do |question| %>
+      <option value ="<%= question.id %>"> <%= question.question %></option>
+      <% end %>
+    </select>
+    <button type = "submit" name="survey_add">Add</button>
+  </form>
+</div>
+<% end %>
+
+<div class="form-group">
+  <form action="/question/add_new" method="post">
+    <input id="survey_id" name="survey_id" type="hidden" value="<%= @survey.id %>">
+    <label for="question">Add a new Question:</label>
+    <input type="text" name="question">
+    <button class="btn btn-info" type="submit" name="update">Add New</button>
+  </form>
+</div>
+
+
+<div class="form-group">
+  <form action="/survey/<%= @survey.id %>/update" method="post">
+    <input name="_method" type="hidden" value="patch">
+    <label for="name">Rename this Survey:</label>
+    <input type="text" name="name">
+    <button class="btn btn-info" type="submit" name="update">Rename</button>
+  </form>
+</div>
+
+<div class="form-group">
+  <form action="/survey/<%= @survey.id %>/delete" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <input type="hidden" name="survey_id" value="<%= @survey.id %>">
+    <button class="btn btn-danger" name="delete" type="submit">Delete</button>
+  </form>
+</div>

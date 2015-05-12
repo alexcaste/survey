@@ -1,0 +1,39 @@
+<h1>Question details</h1>
+<br>
+<p><%= @question.question %></p>
+<br>
+<% if @question.survey != nil %>
+  <p>This question is on the <a href = "/survey/<%= @question.survey.id %>"><%= @question.survey.name %></a> survey.</p>
+<% end %>
+
+<% if @all_surveys != nil %>
+  <div class = "form-group">
+    <form action = "/question/<%= @question.id %>/add" method = "post">
+      <label for = "survey">Add this question to a survey:</label>
+      <select id = "survey" name = "survey">
+        <% @all_surveys.each do |survey| %>
+        <option value ="<%= survey.id %>"> <%= survey.name %></option>
+        <% end %>
+      </select>
+      <button type = "submit" name="survey_add">Add</button>
+    </form>
+  </div>
+<% end %>
+
+
+<div class="form-group">
+  <form action="/question/<%= @question.id %>/update" method="post">
+    <input name="_method" type="hidden" value="patch">
+    <label for="name">Update this question:</label>
+    <input type="text" name="question">
+    <button class="btn btn-info" type="submit" name="update">Update</button>
+  </form>
+</div>
+
+<div class="form-group">
+  <form action="/question/<%= @question.id %>/delete" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <input type="hidden" name="survey_id" value="<%= @question.id %>">
+    <button class="btn btn-danger" name="delete" type="submit">Delete</button>
+  </form>
+</div>
