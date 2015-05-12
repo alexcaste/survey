@@ -11,7 +11,7 @@
 <div class = "form-group">
   <form action = "/survey/<%= @survey.id %>/add" method = "post">
     <label for = "question">Add a question to this survey:</label>
-    <select id = "question" name = "question">
+    <select id = "question" name="question">
       <% @all_questions.each do |question| %>
       <option value ="<%= question.id %>"> <%= question.question %></option>
       <% end %>

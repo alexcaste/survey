@@ -1,6 +1,6 @@
-Env['RACK_ENV'] = 'test'
+ENV['RACK_ENV'] = 'test'
 
-require 'sinatra/activerecords'
+require 'sinatra/activerecord'
 require 'rspec'
 require 'pg'
 require 'survey'

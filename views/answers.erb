@@ -1,0 +1,34 @@
+<h1>All Answers in the Manager</h1>
+<br>
+<br>
+<ol>
+  <% @questions.each do |question| %>
+    <li><p><a href='/question/<%= question.id %>'> <%= question.question %>?</a>  [<a href="/question/<%= question.id %>/del">del</a>]
+    </p></li>
+    <ul>
+      <% question.answers.each do |answer| %>
+        <li><%= answer.description %> [<a href="/answer/<%= answer.id %>/delete">x</a>]
+          <% if answer.counter != nil %>
+            <p>This has been chosen <%= answer.counter %> times.</p>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</ol>
+
+<% if @questions.any?() %>
+
+  <p> Add a new answer for a question:</p>
+  <form action= '/add_answer/' method= 'post'>
+    <label for="question_id">Select Question:</label>
+    <select id="question_id" name="question_id" type="text">
+      <% @questions.each do |question| %>
+      <option value="<%= question.id %>"> <%= question.question %> </option>
+      <% end %>
+    </select>
+    <label for="add_answer">Input Answer:</label>
+    <input id='add_answer' name= 'add_answer' type= 'text'>
+    <button type= "submit"> Submit </button>
+  </form>
+<% end %>

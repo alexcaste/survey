@@ -1,0 +1,26 @@
+<h3>Oops there were some errors:</h3>
+
+<% if @new_question != nil %>
+  <ul>
+    <% @new_question.errors().full_messages().each() do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+  <h5><a href="/questions" >Return to Questions</a></h5>
+
+<% elsif @new_survey != nil %>
+  <ul>
+    <% @new_survey.errors().full_messages().each() do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+
+  <h5><a href="/surveys" >Return to Surveys</a></h5>
+<% elsif @question != nil %>
+<ul>
+  <% @new_question.errors().full_messages().each() do |message| %>
+  <li><%= message %></li>
+  <% end %>
+</ul>
+<h5><a href="/questions" >Return to Questions</a></h5>
+<% end %>

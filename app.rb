@@ -6,9 +6,9 @@ require "pg"
 require "pry"
 require "./lib/survey"
 require "./lib/question"
+require "./lib/answer"
 
 get('/') do
-
   erb(:index)
 end
 
@@ -22,6 +22,12 @@ get '/questions' do
   erb(:questions)
 end
 
+get '/answers' do
+  @answers = Answer.all()
+  @questions = Question.all
+  erb(:answers)
+end
+
 post '/add_survey' do
   name = params.fetch("add_survey")
   Survey.create({name: name})
@@ -31,6 +37,15 @@ end
 post '/add_question' do
   Question.create({question: params.fetch("add_question")})
   redirect('/questions')
+end
+
+post '/add_answer/' do
+  @answers = Answer.all
+  @questions = Question.all
+  question_id = params.fetch("question_id")
+  description = params.fetch("add_answer")
+  Answer.create({description: description, question_id: question_id})
+  redirect('/answers')
 end
 
 post '/question/add_new' do
@@ -43,23 +58,39 @@ post '/question/add_new' do
   erb(:survey)
 end
 
+post '/add_new_answer/:id' do
+  question_id = params.fetch("question_id")
+  description = params.fetch("add_answer")
+  Answer.create({description: description, question_id: question_id})
+  @answers = Answer.all
+  @questions = Question.all
+  @question = Question.find(question_id)
+  @all_surveys = Survey.all()
+  @answer = @question.answers
+  erb(:question)
+end
 
 get '/question/:id' do
   question_id = params.fetch("id")
   @question = Question.find(question_id)
   @all_surveys = Survey.all()
   @surveys = @question.survey
+  @answer = @question.answers
   erb(:question)
 end
 
 post '/question/:id/add' do
-  survey_id = params.fetch("id")
-  question_id = params.fetch("question")
+  survey_id = params.fetch("survey")
+  question_id = params.fetch("id")
   @question = Question.find(question_id)
   @question.update({survey_id: survey_id})
-  @survey = Survey.find(id)
+  @survey = Survey.find(survey_id)
   @questions= @survey.questions
-  @all_questions = Question.all
+  @answers = Answer.all
+  @questions = Question.all
+  @all_surveys = Survey.all()
+  @answer = @question.answers
+
   erb(:question)
 end
 
@@ -68,9 +99,9 @@ post '/survey/:id/add' do
   question_id = params.fetch("question").to_i
   @question = Question.find(question_id)
   @question.update({survey_id: survey_id})
-  @questions = Question.all
-  @surveys = @question.survey
   @survey = Survey.find(survey_id)
+  @questions= @survey.questions
+  @all_questions = Question.all
 
   erb(:survey)
 end
@@ -97,6 +128,24 @@ delete '/question/:id/delete' do
   redirect('/questions')
 end
 
+get '/answer/:id/delete' do
+  id = params.fetch("id").to_i
+  @answer = Answer.find(id)
+  @answer.delete
+  @answers = Answer.all()
+  @questions = Question.all
+  erb(:answers)
+end
+
+get '/question/:id/del' do
+  id = params.fetch("id").to_i
+  @answer = Answer.find(id)
+  @answer.delete
+  @answers = Answer.all()
+  @questions = Question.all
+  erb(:answers)
+end
+
 patch '/question/:id/update' do
   id = params.fetch("id")
   @question = Question.find(id)
@@ -104,6 +153,9 @@ patch '/question/:id/update' do
   @question.update({question: question})
   @all_surveys = Survey.all
   @surveys = @question.survey
+  @answers = Answer.all
+  @questions = Question.all
+  @answer = @question.answers
   erb(:question)
 end
 
